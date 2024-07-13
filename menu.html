@@ -9,6 +9,8 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
+            position: relative; /* Importante para el overlay */
+            overflow-x: hidden; /* Evita la barra de desplazamiento horizontal */
         }
         .menu {
             display: flex;
@@ -17,6 +19,7 @@
             margin-bottom: 20px;
         }
         .menu a {
+            flex: 1; /* Ocupa todo el espacio disponible */
             padding: 10px 15px;
             background-color: #007bff;
             color: white;
@@ -49,10 +52,22 @@
             margin-bottom: 10px;
         }
 
+        /* Estilos para el overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 123, 255, 0.8); /* Azul semitransparente */
+            z-index: 99; /* Asegura que esté por encima del resto del contenido */
+        }
+
         /* Estilos para pantallas más pequeñas */
         @media (max-width: 768px) {
             .menu {
-                justify-content: flex-end; /* Alinea el menú a la derecha en dispositivos móviles */
+                 justify-content: flex-end; /* Alinea el menú a la derecha en dispositivos móviles */
             }
             .menu a {
                 display: none; /* Oculta los enlaces del menú en dispositivos móviles */
@@ -63,56 +78,69 @@
                 background-color: #007bff;
                 color: white;
                 text-decoration: none;
-                border-radius: 5px;
+                border-radius: 5px 5px 0px 0px;
                 border: none;
                 cursor: pointer;
                 position: absolute;
                 top: 20px;
-                left: 20px;
+                z-index: 100; /* Asegura que esté por encima del contenido principal */
             }
             .menu-toggle:hover {
-                background-color: #0056b3;
+                background-color: #007bff;
             }
             .menu.active {
-                display: flex; /* Muestra el menú cuando se activa */
+                display: block; /* Muestra el menú cuando se activa */
                 flex-direction: column;
-                position: absolute;
+                /*position: absolute;*/
                 top: 60px; /* Ajusta la posición del menú desplegable */
                 right: 20px;
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 5px;
+                background-color: #007bff;
+                border: 1px solid #007bff;
+                border-radius: 0px 5px 5px 5px;
                 padding: 10px;
-                z-index: 1; /* Asegura que el menú esté encima del contenido */
+                z-index: 101; /* Asegura que esté por encima del overlay */
             }
             .menu.active a {
                 display: block; /* Muestra los enlaces del menú en dispositivos móviles */
                 margin-bottom: 5px;
             }
+            .title{
+                display: flex;
+                justify-content:baseline;
+                margin: 0;
+            }
         }
+       
     </style>
 </head>
 <body>
+   <div class="title">
     <h1>La Cuestecita</h1>
     
     <!-- Botón de menú hamburguesa para dispositivos móviles -->
-    <button class="menu-toggle" onclick="toggleMenu()">☰ Menú</button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰ </button>
 
     <!-- Menú principal de idiomas -->
-    <div class="menu">
-        <a href="#" onclick="mostrarIdioma('es')">Español</a>
-        <a href="#" onclick="mostrarIdioma('fr')">Francés</a>
-        <a href="#" onclick="mostrarIdioma('en')">Inglés</a>
-        <a href="#" onclick="mostrarIdioma('de')">Alemán</a>
-        <a href="#" onclick="mostrarIdioma('IT')">Italiano</a>
-    </div>
+    
 
-    <div class="idioma" id="es">
+    <!-- Overlay para cubrir la pantalla -->
+   </div>
+   <div class="menu">
+    <!-- <a href="#" onclick="mostrarIdioma('es')">Español</a> -->
+    <a href="#" onclick="mostrarIdioma('fr')">Francés</a>
+    <a href="#" onclick="mostrarIdioma('en')">Inglés</a>
+    <!-- <a href="#" onclick="mostrarIdioma('de')">Alemán</a> -->
+    <a href="#" onclick="mostrarIdioma('IT')">Italiano</a>
+</div>
+   <div class="overlay" onclick="closeMenu()"></div>
+
+
+    <!-- <div class="idioma" id="es"> -->
         <!-- Contenido en español -->
-        <h2>Menú en Español</h2>
-        <p>Bienvenido al menú en español.</p>
+        <!-- <h2>Menú en Español</h2> -->
+        <!-- <p>Bienvenido al menú en español.</p> -->
         <!-- Aquí puedes poner tus enlaces y contenido en español -->
-    </div>
+    <!-- </div> -->
 
     <!-- FR -->
     <div class="idioma" id="fr">
@@ -139,12 +167,12 @@
     </div>
 
     <!-- DE -->
-    <div class="idioma" id="de">
+    <!-- <div class="idioma" id="de"> -->
         <!-- Contenido en alemán -->
-        <h2>Menü auf Deutsch</h2>
-        <p>Willkommen im Menü auf Deutsch.</p>
+        <!-- <h2>Menü auf Deutsch</h2> -->
+        <!-- <p>Willkommen im Menü auf Deutsch.</p> -->
         <!-- Aquí puedes poner tus enlaces y contenido en alemán -->
-    </div>
+    <!-- </div> -->
 
     <!-- IT -->
     <div class="idioma" id="IT">
@@ -161,13 +189,6 @@
     <script>
         function mostrarIdioma(idioma) {
             let idiomas = document.getElementsByClassName('idioma');
-            let menu = document.querySelector('.menu');
-
-            // Ocultar el menú al seleccionar un idioma en dispositivos móviles
-            if (window.innerWidth <= 768) {
-                menu.classList.remove('active');
-            }
-
             for (let i = 0; i < idiomas.length; i++) {
                 if (idiomas[i].id === idioma) {
                     idiomas[i].classList.add('active');
@@ -175,11 +196,21 @@
                     idiomas[i].classList.remove('active');
                 }
             }
+            closeMenu(); // Cierra el menú después de seleccionar un idioma
         }
 
         function toggleMenu() {
             let menu = document.querySelector('.menu');
+            let overlay = document.querySelector('.overlay');
             menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            let menu = document.querySelector('.menu');
+            let overlay = document.querySelector('.overlay');
+            menu.classList.remove('active');
+            overlay.classList.remove('active');
         }
     </script>
 </body>
