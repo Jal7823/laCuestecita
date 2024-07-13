@@ -63,9 +63,15 @@
             background-color: rgba(0, 123, 255, 0.8); /* Azul semitransparente */
             z-index: 99; /* Asegura que esté por encima del resto del contenido */
         }
+        .logo{
+            display: none;
+        }
 
         /* Estilos para pantallas más pequeñas */
         @media (max-width: 768px) {
+            .logo{
+                display: block;
+            }
             .menu {
                  justify-content: flex-end; /* Alinea el menú a la derecha en dispositivos móviles */
             }
@@ -106,25 +112,30 @@
             }
             .title{
                 display: flex;
-                justify-content:baseline;
+                justify-content:space-around;
                 margin: 0;
             }
+            .logo{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+           
         }
+        
        
     </style>
 </head>
 <body>
-   <div class="title">
-    <h1>La Cuestecita</h1>
     
-    <!-- Botón de menú hamburguesa para dispositivos móviles -->
     <button class="menu-toggle" onclick="toggleMenu()">☰ </button>
-
-    <!-- Menú principal de idiomas -->
-    
-
-    <!-- Overlay para cubrir la pantalla -->
+   <div class="title">
+  
+    <img class="logo" src="logo.jpeg" alt="">
+    <!-- Botón de menú hamburguesa para dispositivos móviles -->
+  
    </div>
+    
    <div class="menu">
     <!-- <a href="#" onclick="mostrarIdioma('es')">Español</a> -->
     <a href="#" onclick="mostrarIdioma('fr')">Francés</a>
