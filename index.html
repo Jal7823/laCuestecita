@@ -66,6 +66,9 @@
         .logo{
             display: none;
         }
+        .menu2 {
+            display: none;
+        }
 
         /* Estilos para pantallas más pequeñas */
         @media (max-width: 768px) {
@@ -121,7 +124,28 @@
                 border-radius: 50%;
                 margin-bottom: 2px;
             }
-           
+            .menu2 {
+                display: flex;
+                justify-content: center; /* Centra los elementos */
+                gap: 10px;
+                margin-bottom: 20px;
+                background-color: #007bff; /* Color de fondo del menú */
+                padding: 10px;
+                border-radius: 5px;
+                position: relative;
+                z-index: 98; /* Asegura que esté debajo del overlay */
+            }
+            .menu2 a {
+                flex: 1; /* Ocupa todo el espacio disponible */
+                padding: 10px 15px;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                white-space: nowrap;
+            }
+            .menu2 a:hover {
+                background-color: #0056b3;
+            }
         }
         
        
@@ -136,62 +160,47 @@
     <!-- Botón de menú hamburguesa para dispositivos móviles -->
   
    </div>
-    
-   <div class="menu">
-    <!-- <a href="#" onclick="mostrarIdioma('es')">Español</a> -->
+   <h3 id="initial-message">Select your leanguage in the menu please</h3>
+
+   <!-- Menu2 -->
+   <div class="menu2">
     <a href="#" onclick="mostrarIdioma('fr')">Francés</a>
     <a href="#" onclick="mostrarIdioma('en')">Inglés</a>
-    <!-- <a href="#" onclick="mostrarIdioma('de')">Alemán</a> -->
     <a href="#" onclick="mostrarIdioma('IT')">Italiano</a>
-</div>
+   </div>
+   
+   <!-- Menu principal -->
+   <div class="menu">
+    <a href="#" onclick="mostrarIdioma('fr')">Francés</a>
+    <a href="#" onclick="mostrarIdioma('en')">Inglés</a>
+    <a href="#" onclick="mostrarIdioma('IT')">Italiano</a>
+   </div>
+   
    <div class="overlay" onclick="closeMenu()"></div>
 
 
-    <!-- <div class="idioma" id="es"> -->
-        <!-- Contenido en español -->
-        <!-- <h2>Menú en Español</h2> -->
-        <!-- <p>Bienvenido al menú en español.</p> -->
-        <!-- Aquí puedes poner tus enlaces y contenido en español -->
-    <!-- </div> -->
-
-    <!-- FR -->
+    <!-- Contenido de idiomas -->
     <div class="idioma" id="fr">
-        <!-- Contenido en francés -->
         <h2>Menú en Francés</h2>
         <p>Bienvenue dans le menu en français.</p>
-        <!-- Aquí puedes poner tus enlaces y contenido en francés -->
         <img src="FR/1.jpg" alt="">
         <img src="FR/2.jpg" alt="">
         <img src="FR/3.jpg" alt="">
         <img src="FR/4.jpg" alt="">
     </div>
 
-    <!-- EN -->
     <div class="idioma" id="en">
-        <!-- Contenido en inglés -->
         <h2>Menu in English</h2>
         <p>Welcome to the menu in English.</p>
-        <!-- Aquí puedes poner tus enlaces y contenido en inglés -->
         <img src="EN/1.jpg" alt="">
         <img src="EN/2.jpg" alt="">
         <img src="EN/3.jpg" alt="">
         <img src="EN/4.jpg" alt="">
     </div>
 
-    <!-- DE -->
-    <!-- <div class="idioma" id="de"> -->
-        <!-- Contenido en alemán -->
-        <!-- <h2>Menü auf Deutsch</h2> -->
-        <!-- <p>Willkommen im Menü auf Deutsch.</p> -->
-        <!-- Aquí puedes poner tus enlaces y contenido en alemán -->
-    <!-- </div> -->
-
-    <!-- IT -->
     <div class="idioma" id="IT">
-        <!-- Contenido en italiano -->
         <h2>Menu in Italiano</h2>
         <p>Benvenuti nel menu in italiano.</p>
-        <!-- Aquí puedes poner tus enlaces y contenido en italiano -->
         <img src="IT/1.jpg" alt="">
         <img src="IT/2.jpg" alt="">
         <img src="IT/3.jpg" alt="">
@@ -199,6 +208,11 @@
     </div>
 
     <script>
+        // Mostrar mensaje inicial solo en la primera visita
+        if (!localStorage.getItem('languageSelected')) {
+            document.getElementById('initial-message').style.display = 'block';
+        }
+
         function mostrarIdioma(idioma) {
             let idiomas = document.getElementsByClassName('idioma');
             for (let i = 0; i < idiomas.length; i++) {
@@ -209,6 +223,9 @@
                 }
             }
             closeMenu(); // Cierra el menú después de seleccionar un idioma
+            localStorage.setItem('languageSelected', true); // Marca que se ha seleccionado un idioma
+            document.getElementById('initial-message').style.display = 'none'; // Oculta el mensaje inicial
+            document.querySelector('.menu2').style.display = 'none'; // Oculta menu2 al seleccionar idioma
         }
 
         function toggleMenu() {
@@ -216,6 +233,7 @@
             let overlay = document.querySelector('.overlay');
             menu.classList.toggle('active');
             overlay.classList.toggle('active');
+            document.querySelector('.menu2').style.display = 'none'; // Oculta menu2 al abrir menú
         }
 
         function closeMenu() {
@@ -223,6 +241,7 @@
             let overlay = document.querySelector('.overlay');
             menu.classList.remove('active');
             overlay.classList.remove('active');
+            document.querySelector('.menu2').style.display = 'none'; // Oculta menu2 al cerrar menú
         }
     </script>
 </body>
