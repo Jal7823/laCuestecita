@@ -2,7 +2,7 @@ import os
 import qrcode
 
 # Datos que quieres codificar en el QR
-datos = "http://127.0.0.1:5500/menu.html#"
+datos = "https://jal7823.github.io/laCuestecita/#"
 
 # Generar objeto QRCode
 codigo = qrcode.make(datos)
